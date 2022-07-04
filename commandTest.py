@@ -187,7 +187,7 @@ def replaceSoStr(apkDir):
     log('SDK.smali 替换完毕')
     # 2、替换g.smali 中的 E:\slm_1100011\smali\a\a\a\a\a\c
     gPath = apkDir + '\\smali\\a\\a\\a\\a\\a\\c\\g.smali'
-    log(f' g.smali path :{gPath}')
+    log(f'g.smali path :{gPath}')
     replaceStr(gPath, pattern, f"{newSoStr}\"")
     log('g.smali替换完毕')
     # 添加smali
@@ -203,14 +203,14 @@ def replaceStr(path, pattern, newStr):
         if len(mat) > 0:
             s = mat[0]
             if s == newStr:
-                print(f'匹配到的 {s} 相同，不需要替换')
+                log(f'{path}匹配到的 {s} 相同，不需要替换')
                 return
     sdkSmali = open(path, 'w+')
     for line in sdkLines:
         mat = re.findall(pattern, line)
         if len(mat) > 0:
             s = mat[0]
-            print(f'匹配到的 {s}')
+            log(f'{path}匹配到的 {s}')
             newStr = line.replace(s, newStr)
             sdkSmali.write(newStr)
         else:
