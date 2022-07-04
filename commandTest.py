@@ -17,19 +17,20 @@ newSmaliPath = 'E:\\AndroidProject\\CardSDK\\sdklib\\src\\main\\java\\com\\andro
 # 新的so字符串签名
 newSoStr = 'koy0VlJI9yFZdpJMuFrwxkP+Kfod7G2qWKT8rJiq3TByeFGI9YI2m6W+km/NDkDBaaEP+e6g96ZPKRB8ML2F0QQ7t+ZzVl4H+AIqI9aXX7k='
 
-
 # 遍历文件夹下所有文件 findAllFile("E:\\test")
 # def findAllFile(base):
 #     for root, ds, fs in os.walk(base):
 #         for f in fs:
 #             yield f
 
+logTxt = ''
+
 
 # 反编译apk  decompileApk("E:\\test")
 def decompileApk(apkPath):
     apkDir = apkPath.replace('.apk', '')
     command = f"echo   |apktool d {apkPath} -f -o {apkDir}"
-    print(f'反编译 命令 {command}')
+    log(f'反编译 命令 {command}')
     os.system(command)
     return apkDir
 
@@ -40,25 +41,26 @@ def deleteDexAndSo(dir):
     for absPath in fileList:
         print(f"{absPath}")
         if absPath.endswith(".so") or absPath.endswith(".dex"):
-            os.remove(os.path.join(dir, absPath))
+            f = os.path.join(dir, absPath)
+            log(f'删除{f}')
+            os.remove(f)
 
 
 # 复制dex和so到指定目录 copyDexAndSo("E:\\AndroidProject\\CardSDK\\sdklib\\src\\main\\assets\\","E:\\test\\slm_1100010\\assets\\")
 def copyDexAndSo(dir, distDir):
     fileList = os.listdir(dir)
     for absPath in fileList:
-        print(f"{absPath}")
         if absPath.endswith(".so") or absPath.endswith(".dex"):
             originPath = os.path.join(dir, absPath)
             targetPath = os.path.join(distDir, absPath)
-            print(f"原文件路径:{originPath} , 目标文件路径:{targetPath}")
+            log(f"原文件路径:{originPath} , 目标文件路径:{targetPath}")
             shutil.copyfile(originPath, targetPath)
 
 
 # 重编译apk buildApk("E:\\test\\slm_1100010")
 def buildApk(path):
     command = f"java -jar D:\\apktool\\apktool.jar b {path}"
-    print(f"buildApkCommand:{command}")
+    log(f"重编译apk 命令:{command}")
     os.system(command)
 
 
@@ -72,6 +74,7 @@ def analyzePackage(path):
             end = line.index("\"", start)
             package = line[start:end]
             manifestFile.close()
+            log(f'当前apk 包名是:{package}')
             return package
 
     # packageName = analyzePackage("E:\\test\slm_1100010\AndroidManifest.xml")
@@ -90,11 +93,11 @@ def signApk(dir, name, pkg):
     for f in list:
         if f == pkg:
             signJson = signInfoPath + "\\" + pkg + "\\signJson.txt"
-            print(f"签名信息路径:{signJson}")
+            log(f"签名信息路径:{signJson}")
             f = open(signJson, mode='r')
             jsonStr = f.readline()
             jsonObj = json.loads(jsonStr)
-            print(f"签名信息:{jsonObj}")
+            log(f"签名信息:{jsonObj}")
             if jsonObj['pkg'] == pkg:
                 alias = jsonObj['alias']
                 password = jsonObj['password']
@@ -102,7 +105,7 @@ def signApk(dir, name, pkg):
                 distApk = f"{dir}" + f"\\{name}\\dist\\{name}.apk"
                 outputApk = output + f"\\{name}.apk"
                 signCommand = f"echo {password}| jarsigner -verbose -keystore {jks} -signedjar {outputApk} {distApk} {alias}"
-                print(f"签名命令 : {signCommand}")
+                log(f"签名命令 : {signCommand}")
                 os.system(signCommand)
             f.close()
 
@@ -111,7 +114,6 @@ def findApks(dir):
     apks = []
     for fileName in os.listdir(dir):
         print(fileName)
-
         if str(fileName).endswith('.apk'):
             apks.append(f"{fileName}")
     return apks
@@ -130,9 +132,9 @@ def addSmali(apkDir):
             break
     manifestFile.close()
     if isNew:
-        print('已经是最新的 不需要修改替换')
+        log('存在LandScapeActivity 不需要修改替换')
         return
-    print('不是最新的 需要修改替换Smali')
+    log('不存在LandScapeActivity 需要修改替换Smali')
     if not isNew:  # 没有LandScapeActivity就需要加上
         pattern = re.compile('</activity>')
         added = False
@@ -150,13 +152,13 @@ def addSmali(apkDir):
                 LandStr = line.replace(endTag, f'{endTag}\n{LandScapeActivity}')
                 manifestFile.write(LandStr)
                 added = True
-                print('manifest 添加完成')
+                log('manifest 添加存在LandScapeActivity 完成')
                 continue
             manifestFile.write(line)
         manifestFile.close()
         # 替换IActivity，LandScapeActivity，TaurusHelper，TWebViewActivity
         oldSmaliPath = f'{apkDir}\\smali\\com\\android\\cardsdk\\sdklib\\taurus'
-        print(f'其余Smali 开始替换 路径为{oldSmaliPath}')
+        log(f'其余Smali 开始替换 原路径为{oldSmaliPath}')
         relaceSmail(oldSmaliPath)
 
 
@@ -170,7 +172,7 @@ def relaceSmail(oldSmaliPath):
     shutil.copyfile(f"{newSmaliPath}\\LandScapeActivity.smali", LandScapeActivity)
     shutil.copyfile(f"{newSmaliPath}\\TaurusHelper.smali", TaurusHelper)
     shutil.copyfile(f"{newSmaliPath}\\TWebViewActivity.smali", TWebViewActivity)
-    print('smali 替换完成')
+    log('smali 替换完成')
 
 
 # 替换So的签名字符串 replaceSoStr('E:\\test\\slm_1100011')
@@ -179,15 +181,15 @@ def replaceSoStr(apkDir):
     pattern = re.compile(f'{prefix}.+\"$')
     # 1、先替换SDK里面的
     sdkPath = apkDir + '\\smali\\com\\android\\cardsdk\\sdklib\\SDK.smali'
-    print(f'SDKpath :{sdkPath}')
+    log(f'SDK.smali path :{sdkPath}')
     # newStr= f"{replaceSoStr}\""
     replaceStr(sdkPath, pattern, f"{newSoStr}\"")
-    print('SDK替换完毕')
+    log('SDK.smali 替换完毕')
     # 2、替换g.smali 中的 E:\slm_1100011\smali\a\a\a\a\a\c
     gPath = apkDir + '\\smali\\a\\a\\a\\a\\a\\c\\g.smali'
-    print(f' g.smali path :{gPath}')
+    log(f' g.smali path :{gPath}')
     replaceStr(gPath, pattern, f"{newSoStr}\"")
-    print('g.smali替换完毕')
+    log('g.smali替换完毕')
     # 添加smali
     addSmali(apkDir)
 
@@ -219,43 +221,52 @@ def replaceStr(path, pattern, newStr):
 def start():
     # 0.遍历文件夹下所有文件获取apk
     apks = findApks(rootPath)
-    print(apks)
+    log(apks)
     for apkName in apks:
         # 1、反编译apk
-        print(f"{apkName}反编译ing....")
-        print(f"apkName:{apkName}")
         apkPath = f"{rootPath}\\{apkName}"
-        print(f"apkPath:{apkPath}")
+        log(f"1、开始反编译{apkPath}")
         apkDir = decompileApk(apkPath)
-        print(f"{apkName}反编译成功....")
+        log(f"{apkPath}反编译成功....")
         # 2、删除原来的so和dex
         apkAssets = f"{apkDir}\\assets\\"
-        print(f"apkDir:{apkDir}  apkAssets:{apkAssets}")
+        log(f'2、开始删除原来的so和dex {apkAssets}')
         deleteDexAndSo(apkAssets)
-        print(f"{apkAssets}下删除插件成功....")
+        log(f'so和dex删除成功')
         # 3、复制新版本的so和dex到目标文件夹下
+        log(f'3、开始替换插件')
         copyDexAndSo(newDexDir, apkAssets)
-        print(f"插件已替换....")
+        print(f"插件替换成功")
         # 4、替换 So的签名字符串、smali 的修改
+        log(f'4、开始插件升级')
         replaceSoStr(apkDir)
+        log(f'插件升级完成')
         # 5、重编译apk
+        log(f'5、开始重编译apk')
         buildApk(apkDir)
-        print(f"重编译apk完成....")
-        # 6、分析AndroidManifest获得包名
+        log(f'apk重编译完成')
+        # 6.1、分析AndroidManifest获得包名
+        log(f'6、开始apk签名')
         pkg = analyzePackage(f'{apkDir}\\AndroidManifest.xml')
-        print(f"包名:{pkg}....")
-        # 7、重编译apk签名
+        # 6.2、重编译apk签名
         signApk(rootPath, apkName.replace('.apk', ''), pkg)
-        print(f"{apkName} 完成打包....")
+        log(f'apk签名完成')
 
 
+
+def log(message):
+    print(message, file=logTxt)
+
+
+# logTxt = str(date.today())
 if __name__ == '__main__':
-    # replaceSoStr('E:\\slm_1100011')
+    logTxt = open(str(date.today()), 'w+',encoding='utf-8')
     startTime = int(time.time())
     start()
     endTime = int(time.time())
     cost = endTime - startTime
-    print(f'共耗时 {cost}')
+    log(f'共耗时 {cost}S')
+    logTxt.close()
     # print("over")
     # apkDir='E:\\test\\slm_1100015'
     # buildApk(apkDir)
