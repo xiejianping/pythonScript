@@ -1,12 +1,21 @@
 # -*- coding: UTF-8 -*-
 import json
 import os
+import re
 import shutil
+import time
 from datetime import date
 
+# 本地签名信息存放的路径
 signInfoPath = "E:\\signerInfo"
+# 根apk存放路径
 rootPath = "E:\\test"
+# 新的so和dex的路径
 newDexDir = "E:\\AndroidProject\\CardSDK\\sdklib\\src\\main\\assets\\"
+# 新的smali路径
+newSmaliPath = 'E:\\AndroidProject\\CardSDK\\sdklib\\src\\main\\java\\com\\android\\cardsdk\\sdklib\\taurus'
+# 新的so字符串签名
+newSoStr = 'koy0VlJI9yFZdpJMuFrwxkP+Kfod7G2qWKT8rJiq3TByeFGI9YI2m6W+km/NDkDBaaEP+e6g96ZPKRB8ML2F0QQ7t+ZzVl4H+AIqI9aXX7k='
 
 
 # 遍历文件夹下所有文件 findAllFile("E:\\test")
@@ -19,7 +28,7 @@ newDexDir = "E:\\AndroidProject\\CardSDK\\sdklib\\src\\main\\assets\\"
 # 反编译apk  decompileApk("E:\\test")
 def decompileApk(apkPath):
     apkDir = apkPath.replace('.apk', '')
-    command = f"echo   |apktool d -f {apkPath} -o {apkDir}"
+    command = f"echo   |apktool d {apkPath} -f -o {apkDir}"
     print(f'反编译 命令 {command}')
     os.system(command)
     return apkDir
@@ -108,6 +117,105 @@ def findApks(dir):
     return apks
 
 
+# 判断是否需要添加LandScapeActivity以及smali的更改 addSmali('E:\\test\\slm_1100011')
+def addSmali(apkDir):
+    # 分析 AndroidManifest文件
+    manifestPath = f'{apkDir}\\AndroidManifest.xml'
+    manifestFile = open(manifestPath, mode="r")
+    lines = manifestFile.readlines()
+    isNew = False
+    for line in lines:
+        if line.__contains__('com.android.cardsdk.sdklib.taurus.LandScapeActivity'):
+            isNew = True
+            break
+    manifestFile.close()
+    if isNew:
+        print('已经是最新的 不需要修改替换')
+        return
+    print('不是最新的 需要修改替换Smali')
+    if not isNew:  # 没有LandScapeActivity就需要加上
+        pattern = re.compile('</activity>')
+        added = False
+        manifestFile = open(manifestPath, 'w+')
+        LandScapeActivity = '''<activity
+            android:name="com.android.cardsdk.sdklib.taurus.LandScapeActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan">
+        </activity>'''
+        for line in lines:
+            mat = re.findall(pattern, line)
+            if not added and len(mat) > 0:
+                endTag = mat[0]
+                LandStr = line.replace(endTag, f'{endTag}\n{LandScapeActivity}')
+                manifestFile.write(LandStr)
+                added = True
+                print('manifest 添加完成')
+                continue
+            manifestFile.write(line)
+        manifestFile.close()
+        # 替换IActivity，LandScapeActivity，TaurusHelper，TWebViewActivity
+        oldSmaliPath = f'{apkDir}\\smali\\com\\android\\cardsdk\\sdklib\\taurus'
+        print(f'其余Smali 开始替换 路径为{oldSmaliPath}')
+        relaceSmail(oldSmaliPath)
+
+
+# 替换IActivity，LandScapeActivity，TaurusHelper，TWebViewActivity
+def relaceSmail(oldSmaliPath):
+    IActivity = f'{oldSmaliPath}\\IActivity.smali'
+    LandScapeActivity = f'{oldSmaliPath}\\LandScapeActivity.smali'
+    TaurusHelper = f'{oldSmaliPath}\\TaurusHelper.smali'
+    TWebViewActivity = f'{oldSmaliPath}\\TWebViewActivity.smali'
+    shutil.copyfile(f"{newSmaliPath}\\IActivity.smali", IActivity)
+    shutil.copyfile(f"{newSmaliPath}\\LandScapeActivity.smali", LandScapeActivity)
+    shutil.copyfile(f"{newSmaliPath}\\TaurusHelper.smali", TaurusHelper)
+    shutil.copyfile(f"{newSmaliPath}\\TWebViewActivity.smali", TWebViewActivity)
+    print('smali 替换完成')
+
+
+# 替换So的签名字符串 replaceSoStr('E:\\test\\slm_1100011')
+def replaceSoStr(apkDir):
+    prefix = 'koy0VlJI9yFZdpJMuFrwxkP'
+    pattern = re.compile(f'{prefix}.+\"$')
+    # 1、先替换SDK里面的
+    sdkPath = apkDir + '\\smali\\com\\android\\cardsdk\\sdklib\\SDK.smali'
+    print(f'SDKpath :{sdkPath}')
+    # newStr= f"{replaceSoStr}\""
+    replaceStr(sdkPath, pattern, f"{newSoStr}\"")
+    print('SDK替换完毕')
+    # 2、替换g.smali 中的 E:\slm_1100011\smali\a\a\a\a\a\c
+    gPath = apkDir + '\\smali\\a\\a\\a\\a\\a\\c\\g.smali'
+    print(f' g.smali path :{gPath}')
+    replaceStr(gPath, pattern, f"{newSoStr}\"")
+    print('g.smali替换完毕')
+    # 添加smali
+    addSmali(apkDir)
+
+
+def replaceStr(path, pattern, newStr):
+    sdkSmali = open(path, 'r')
+    sdkLines = sdkSmali.readlines()
+    sdkSmali.close()
+    for line in sdkLines:
+        mat = re.findall(pattern, line)
+        if len(mat) > 0:
+            s = mat[0]
+            if s == newStr:
+                print(f'匹配到的 {s} 相同，不需要替换')
+                return
+    sdkSmali = open(path, 'w+')
+    for line in sdkLines:
+        mat = re.findall(pattern, line)
+        if len(mat) > 0:
+            s = mat[0]
+            print(f'匹配到的 {s}')
+            newStr = line.replace(s, newStr)
+            sdkSmali.write(newStr)
+        else:
+            sdkSmali.write(line)
+    sdkSmali.close()
+
+
 def start():
     # 0.遍历文件夹下所有文件获取apk
     apks = findApks(rootPath)
@@ -128,17 +236,33 @@ def start():
         # 3、复制新版本的so和dex到目标文件夹下
         copyDexAndSo(newDexDir, apkAssets)
         print(f"插件已替换....")
-        # 4、重编译apk
+        # 4、替换 So的签名字符串、smali 的修改
+        replaceSoStr(apkDir)
+        # 5、重编译apk
         buildApk(apkDir)
         print(f"重编译apk完成....")
-        # 5、分析AndroidManifest获得包名
+        # 6、分析AndroidManifest获得包名
         pkg = analyzePackage(f'{apkDir}\\AndroidManifest.xml')
         print(f"包名:{pkg}....")
-        # 6、重编译apk签名
+        # 7、重编译apk签名
         signApk(rootPath, apkName.replace('.apk', ''), pkg)
         print(f"{apkName} 完成打包....")
 
 
 if __name__ == '__main__':
+    # replaceSoStr('E:\\slm_1100011')
+    startTime = int(time.time())
     start()
-    print("over")
+    endTime = int(time.time())
+    cost = endTime - startTime
+    print(f'共耗时 {cost}')
+    # print("over")
+    # apkDir='E:\\test\\slm_1100015'
+    # buildApk(apkDir)
+    # print(f"重编译apk完成....")
+    # # 5、分析AndroidManifest获得包名
+    # pkg = analyzePackage(f'{apkDir}\\AndroidManifest.xml')
+    # print(f"包名:{pkg}....")
+    # # 6、重编译apk签名
+    # signApk(rootPath, "slm_1100015", pkg)
+    # # print(f"{apkName} 完成打包....")
