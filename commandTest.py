@@ -152,7 +152,7 @@ def addSmali(apkDir):
                 LandStr = line.replace(endTag, f'{endTag}\n{LandScapeActivity}')
                 manifestFile.write(LandStr)
                 added = True
-                log('manifest 添加存在LandScapeActivity 完成')
+                log('manifest 添加LandScapeActivity 完成')
                 continue
             manifestFile.write(line)
         manifestFile.close()
@@ -203,14 +203,14 @@ def replaceStr(path, pattern, newStr):
         if len(mat) > 0:
             s = mat[0]
             if s == newStr:
-                log(f'{path}匹配到的 {s} 相同，不需要替换')
+                log(f'{path}匹配到 {s} 和最新的相同，不需要替换')
                 return
     sdkSmali = open(path, 'w+')
     for line in sdkLines:
         mat = re.findall(pattern, line)
         if len(mat) > 0:
             s = mat[0]
-            log(f'{path}匹配到的 {s}')
+            log(f'{path}匹配到 {s} 和最新的不同 需要替换')
             newStr = line.replace(s, newStr)
             sdkSmali.write(newStr)
         else:
@@ -253,14 +253,13 @@ def start():
         log(f'apk签名完成')
 
 
-
 def log(message):
     print(message, file=logTxt)
 
 
 # logTxt = str(date.today())
 if __name__ == '__main__':
-    logTxt = open(str(date.today()), 'w+',encoding='utf-8')
+    logTxt = open(str(date.today()), 'w+', encoding='utf-8')
     startTime = int(time.time())
     start()
     endTime = int(time.time())
