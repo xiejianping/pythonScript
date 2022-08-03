@@ -90,8 +90,10 @@ def signApk(dir, name, pkg):
         os.makedirs(output)
 
     list = os.listdir(signInfoPath)
+    containpkg = False
     for f in list:
         if f == pkg:
+            containpkg= True
             signJson = signInfoPath + "\\" + pkg + "\\signJson.txt"
             log(f"签名信息路径:{signJson}")
             f = open(signJson, mode='r')
@@ -108,6 +110,11 @@ def signApk(dir, name, pkg):
                 log(f"签名命令 : {signCommand}")
                 os.system(signCommand)
             f.close()
+    if not containpkg:
+        log("---------------------------------------------------")
+        log(f"包名:${pkg} 不存在")
+        log("---------------------------------------------------")
+        IOError(f"包名:${pkg} 不存在")
 
 
 def findApks(dir):
