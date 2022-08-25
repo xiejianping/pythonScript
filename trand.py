@@ -1,15 +1,15 @@
 import json
 import urllib.request
 
-baseUrl = "https://finance.pae.baidu.com/selfselect/sug?wd=603477&skip_login=1&finClientType=pc"
+baseUrl = "https://finance.pae.baidu.com/selfselect/sug?wd=603477&skip_login=1&finClientType=pc" #农牧
+baseUrl1 = "https://finance.pae.baidu.com/selfselect/sug?wd=002444&skip_login=1&finClientType=pc" #巨星科
+# baseUrl1 = "https://finance.pae.baidu.com/selfselect/sug?wd=002840&skip_login=1&finClientType=pc"# 华统
 
 
-def start():
-    getData()
-
-def getData():
-    data = askURL(baseUrl)
+def getData(url):
+    data = askURL(url)
     jsonStr = json.loads(data)
+    # print(f"{jsonStr}  ")
     stock = jsonStr['Result']['stock'][0]
     print(f"{stock['price']}  {stock['increase']}  {stock['ratio']}  ")
 
@@ -25,5 +25,7 @@ def askURL(url):
 
 
 if __name__ == '__main__':
-    start()
+    # start()
+    getData(baseUrl)
+    getData(baseUrl1)
     print("爬取完成")
