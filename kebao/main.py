@@ -1,6 +1,7 @@
 import os
 
-type = 'teen'
+
+type = 'poker'
 apkPath = f'/home/ping/kebao/{type}'
 
 
@@ -10,3 +11,5 @@ def decompile():
 
 if __name__ == '__main__':
     decompile()
+
+
