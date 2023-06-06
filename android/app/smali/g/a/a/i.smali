@@ -1,0 +1,93 @@
+.class public Lg/a/a/i;
+.super Ljava/lang/Object;
+.source ""
+
+
+# instance fields
+.field public a:Z
+
+.field public b:Ljava/lang/String;
+
+.field public c:Ljava/lang/String;
+
+.field public d:Ljava/lang/String;
+
+.field public e:Ljava/lang/String;
+
+.field public f:Ljava/lang/String;
+
+.field public g:Lorg/json/JSONObject;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public toString()Ljava/lang/String;
+    .locals 3
+
+    const/4 v0, 0x7
+
+    new-array v0, v0, [Ljava/lang/Object;
+
+    iget-object v1, p0, Lg/a/a/i;->c:Ljava/lang/String;
+
+    const/4 v2, 0x0
+
+    aput-object v1, v0, v2
+
+    iget-object v1, p0, Lg/a/a/i;->d:Ljava/lang/String;
+
+    const/4 v2, 0x1
+
+    aput-object v1, v0, v2
+
+    iget-object v1, p0, Lg/a/a/i;->b:Ljava/lang/String;
+
+    const/4 v2, 0x2
+
+    aput-object v1, v0, v2
+
+    iget-object v1, p0, Lg/a/a/i;->e:Ljava/lang/String;
+
+    const/4 v2, 0x3
+
+    aput-object v1, v0, v2
+
+    iget-object v1, p0, Lg/a/a/i;->f:Ljava/lang/String;
+
+    const/4 v2, 0x4
+
+    aput-object v1, v0, v2
+
+    iget-boolean v1, p0, Lg/a/a/i;->a:Z
+
+    invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+
+    move-result-object v1
+
+    const/4 v2, 0x5
+
+    aput-object v1, v0, v2
+
+    iget-object v1, p0, Lg/a/a/i;->g:Lorg/json/JSONObject;
+
+    const/4 v2, 0x6
+
+    aput-object v1, v0, v2
+
+    const-string v1, "Event Failure msg:%s time:%s adid:%s event:%s cid:%s retry:%b json:%s"
+
+    invoke-static {v1, v0}, Lg/a/a/d1;->a(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
