@@ -44,7 +44,7 @@ def signV2():
 
 
 def compile():
-    cmd = f'java -jar apktool_2.6.1.jar b {apkPath}/{type}'
+    cmd = f'java -jar apktool_2.7.0.jar b {apkPath}/{type}'
     print(cmd)
     os.system(cmd)
 
