@@ -2,7 +2,7 @@ import json
 
 
 class JKSConfig:
-    __infoPath = "../android/resource/jks"
+    __infoPath = "./resource/jks"
     __jksFilePath = f"{__infoPath}/jksinfo.json"
 
     def read_file(self, file_path):
@@ -12,7 +12,6 @@ class JKSConfig:
 
     def __init__(self, pkg):
         jksInfo = self.read_file(self.__jksFilePath)
-        print(jksInfo)
         infoList = jksInfo['info']
         for info in infoList:
             if info['pkg'] == pkg:
