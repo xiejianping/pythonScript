@@ -1,7 +1,7 @@
 import os
 
 
-type = 'slot'
+type = 'cricket'
 apkPath = f'/home/ping/kebao/{type}'
 
 

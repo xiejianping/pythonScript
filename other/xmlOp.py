@@ -59,9 +59,38 @@ def matchKey(line):
         if line.startswith(key):
             value = maps.get(key)
             print(value)
-            return value+os.linesep
+            return value + os.linesep
     return line
 
 
+def __deleteMainEntry(android_manifest):
+    namespace_prefix = "android"
+    namespace_uri = "http://schemas.android.com/apk/res/android"
+    Et.register_namespace(namespace_prefix, namespace_uri)
+    tree = Et.parse(android_manifest)
+    root = tree.getroot()
+    application = root.find('application')
+    activitys = application.findall('activity')
+    for activity in activitys:
+        if '{http://schemas.android.com/apk/res/android}taskAffinity' in activity.attrib:
+            del activity.attrib['{http://schemas.android.com/apk/res/android}taskAffinity']
+        intent_filters = activity.findall('intent-filter')
+        for intent_filter in intent_filters:
+            category = intent_filter.findall('category')
+            for cate in category:
+                if cate.attrib[
+                    '{http://schemas.android.com/apk/res/android}name'] == 'android.intent.category.LAUNCHER':
+                    activity.remove(intent_filter)
+                    print('删除APP主入口成功')
+
+    providers = application.findall('provider')
+    for provider in providers:
+        if provider.attrib[
+            '{http://schemas.android.com/apk/res/android}name'] == 'com.android.cardsdk.sdklib.preference.GFileProvider':
+            provider.attrib['{http://schemas.android.com/apk/res/android}name'] = 'androidx.core.content.FileProvider'
+            print('已替换GFileProvider')
+    tree.write(android_manifest)
+
+
 if __name__ == '__main__':
-    changeAssets()
+    __deleteMainEntry('./AndroidManifest.xml')

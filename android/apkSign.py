@@ -5,8 +5,8 @@ v1outputApk = "./resource/app_v1_signed.apk"
 v1alignedApk = "./resource/app_v1_aligned_signed.apk"
 v2outputApk = "./resource/app_v2_signed.apk"
 distApk = "./resource/app.apk"
-password = "oryuauzfp"
-alias = "pahyctxfp"
+password = "hdfffkc"
+alias = "supeerr"
 
 apksignerPath ="/home/ping/Android/Sdk/build-tools/33.0.2"
 def signV1():
