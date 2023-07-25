@@ -15,15 +15,15 @@ def replaceSmali(oldpkg, newpkg):
             for root, dirs, files in os.walk(f'{output}/{smaliDir}'):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    with open(file_path, mode='r', encoding='utf-8') as file:
-                        file_content = file.read()
-                    file_content = file_content.replace(oldpkg, newpkg).replace(oldSmalipkg, newSmalipkg)
-                    with open(file_path, mode='w', encoding='utf-8') as file:
-                        file.write(file_content)
+                    with open(file_path, mode='r', encoding='utf-8') as f:
+                        file_content = f.read()
+                    file_content = file_content.replace(oldSmalipkg, newSmalipkg).replace(oldpkg, newpkg)
+                    with open(file_path, mode='w', encoding='utf-8') as f:
+                        f.write(file_content)
 
 
 def replaceManifest(oldpkg, newpkg):
-    file_path = './resource/app/AndroidManifest.xml'
+    file_path = f'{output}/AndroidManifest.xml'
     with open(file_path, mode='r', encoding='utf-8') as file:
         file_content = file.read()
     file_content = file_content.replace(oldpkg, newpkg)

@@ -4,10 +4,11 @@ from online.handler import replacepkg
 
 
 def start():
-    decodeOnline()
-    replacepkg("", "")
+    # decodeOnline()
+    replacepkg("spider.solitaire.card.games.free.no.ads.klondike.solitare.patience.king.MyActivity", "sas.asa.sda.xaActivity")
     compileOnline()
 
 
 if __name__ == '__main__':
-    start()
+    decodeOnline()
+    # start()

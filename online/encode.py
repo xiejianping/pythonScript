@@ -33,13 +33,14 @@ def signAndInstall(path):
     deCodePath = f'{output}/dist/app.apk'
     if os.path.exists(deCodePath):
         print('重编译成功，准备签名')
-        appPath = './resource/app.apk'
+        if not os.path.exists('./resource/sign'):
+            os.makedirs("./resource/sign")
+        appPath = './resource/sign/app.apk'
         if os.path.exists(appPath):
             os.remove(appPath)
         shutil.copy(deCodePath, appPath)
         signV2()
-        installApk(f'{os.getcwd()}/resource/app_v2_signed.apk')
-
+        installApk(f'{os.getcwd()}/resource/sign/app_v2_signed.apk')
 
 
 def compileOnline():

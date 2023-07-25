@@ -1,10 +1,10 @@
 import os
 
 jks = "./resource/ping.jks"
-v1outputApk = "./resource/app_v1_signed.apk"
-v1alignedApk = "./resource/app_v1_aligned_signed.apk"
-v2outputApk = "./resource/app_v2_signed.apk"
-distApk = "./resource/app.apk"
+v1outputApk = "./resource/sign/app_v1_signed.apk"
+v1alignedApk = "./resource/sign/app_v1_aligned_signed.apk"
+v2outputApk = "./resource/sign/app_v2_signed.apk"
+distApk = "./resource/sign/app.apk"
 password = "hdfffkc"
 alias = "supeerr"
 
