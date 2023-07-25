@@ -19,5 +19,10 @@ def decodeDex(apkPath, outputPath):
     cmd = f"java -jar {apktoolPath} d {apkPath} -s -f -o {outputPath}"
     os.system(cmd)
 
-if __name__ == '__main__':
+
+def decodeOnline():
     decodeSmali(originApk, output)
+
+
+if __name__ == '__main__':
+    decodeOnline()

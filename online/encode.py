@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from online.apkSign import signV2, v2outputApk
+from online.apkSign import signV2
 
 output = "./resource/app"
 
@@ -41,7 +41,10 @@ def signAndInstall(path):
         installApk(f'{os.getcwd()}/resource/app_v2_signed.apk')
 
 
-if __name__ == '__main__':
+
+def compileOnline():
     signAndInstall(output)
 
 
+if __name__ == '__main__':
+    signAndInstall(output)
