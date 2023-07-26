@@ -35,7 +35,8 @@ def copy_files(source_folder, target_folder):
 def zip(pn, pkg):
     with open('./res/zip.sh', mode='r', encoding='utf-8') as file:
         cmd = file.read()
-    cmd.replace("$pn", pn).replace("$pkg", pkg)
+    cmd = cmd.replace("$pn", pn).replace("$pkg", pkg)
+    print(cmd)
     with open('./res/zip.sh', mode='w', encoding='utf-8') as file:
         file.write(cmd)
     os.system('./res/zip.sh')
@@ -44,7 +45,8 @@ def zip(pn, pkg):
 def uploadDocker(pn, path):
     with open('./res/upload.sh', mode='r', encoding='utf-8') as file:
         cmd = file.read()
-    cmd.replace("$pn", pn).replace("$path", path)
+    cmd = cmd.replace("$pn", pn).replace("$path", path)
+    print(cmd)
     with open('./res/upload.sh', mode='w', encoding='utf-8') as file:
         file.write(cmd)
     os.system('./res/upload.sh')
@@ -54,8 +56,11 @@ def start(pn, pkg):
     onlineCodePath = '/home/ping/AndroidProject/Online'
     saveCodePath = f'/home/ping/dockercmd/{pn}/{pkg}'
     copy_files(onlineCodePath, saveCodePath)
-    zip(saveCodePath, pn)
-    uploadDocker(pn, pkg)
+    print('文件复制完成')
+    zip(pn, pkg)
+    print('文件压缩完成 上传ing')
+    uploadDocker(pn, f'{saveCodePath}.zip')
+    print('文件上传成功')
 
 
 if __name__ == '__main__':
