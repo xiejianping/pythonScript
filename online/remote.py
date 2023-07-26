@@ -33,8 +33,7 @@ def copy_files(source_folder, target_folder):
 
 
 def zip(pn, pkg):
-    with open('./res/zip.sh', mode='r', encoding='utf-8') as file:
-        cmd = file.read()
+    cmd = 'cd /home/ping/dockercmd/$pn\nzip -r $pkg.zip $pkg'
     cmd = cmd.replace("$pn", pn).replace("$pkg", pkg)
     print(cmd)
     with open('./res/zip.sh', mode='w', encoding='utf-8') as file:
@@ -43,8 +42,7 @@ def zip(pn, pkg):
 
 
 def uploadDocker(pn, path):
-    with open('./res/upload.sh', mode='r', encoding='utf-8') as file:
-        cmd = file.read()
+    cmd = 'resourcetmp=/home/ubuntu/apps/$pn/\nscp $path docker-60:$resourcetmp'
     cmd = cmd.replace("$pn", pn).replace("$path", path)
     print(cmd)
     with open('./res/upload.sh', mode='w', encoding='utf-8') as file:
@@ -64,4 +62,4 @@ def start(pn, pkg):
 
 
 if __name__ == '__main__':
-    start('sm', 'a.b.c')
+    start('sm', 'a.a.b')
