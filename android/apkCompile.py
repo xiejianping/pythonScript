@@ -35,5 +35,5 @@ def compile(path):
 
 
 if __name__ == '__main__':
-    compile(output)
-    # decodeSmali(originApk, output)
+    # compile(output)
+    decodeSmali(originApk, output)

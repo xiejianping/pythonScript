@@ -5,10 +5,10 @@ from online.handler import replacepkg
 
 def start():
     # decodeOnline()
-    replacepkg("spider.solitaire.card.games.free.no.ads.klondike.solitare.patience.king.MyActivity", "sas.asa.sda.xaActivity")
+    replacepkg("com.vslot.jackpotgoldslots.SplashActivity", "org.cocos2dx.javascript.AppActivity")
     compileOnline()
 
 
 if __name__ == '__main__':
-    decodeOnline()
-    # start()
+    # decodeOnline()
+    start()

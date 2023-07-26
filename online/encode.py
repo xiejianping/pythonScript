@@ -48,4 +48,4 @@ def compileOnline():
 
 
 if __name__ == '__main__':
-    signAndInstall(output)
+    compile(output)
