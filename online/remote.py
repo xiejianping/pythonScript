@@ -6,7 +6,7 @@ pepkJar = f'pepk.jar'
 
 def copy_files(source_folder, target_folder):
     for root, dirs, files in os.walk(source_folder):
-        dirs[:] = [d for d in dirs if d not in ['.git', '.idea', '.cxx']]
+        dirs[:] = [d for d in dirs if d not in ['.git', '.idea', '.cxx', 'build', 'ludo']]
         relative_path = os.path.relpath(root, source_folder)
         target_path = os.path.join(target_folder, relative_path)
         os.makedirs(target_path, exist_ok=True)
@@ -52,14 +52,20 @@ def uploadDocker(pn, path):
 
 def start(pn, pkg):
     onlineCodePath = '/home/ping/AndroidProject/Online'
-    saveCodePath = f'/home/ping/dockercmd/{pn}/{pkg}'
+    pnPath = f'/home/ping/dockercmd/{pn}'
+    saveCodePath = f'{pnPath}/{pkg}'
     copy_files(onlineCodePath, saveCodePath)
     print('文件复制完成')
     zip(pn, pkg)
     print('文件压缩完成 上传ing')
-    uploadDocker(pn, f'{saveCodePath}.zip')
+    zipPath = f'{saveCodePath}.zip'
+    uploadDocker(pn, zipPath)
     print('文件上传成功')
+    shutil.move(saveCodePath, f'{pnPath}/histroy')
+    print('保存历史')
+    os.remove(zipPath)
+    print(f'已删除{zipPath}')
 
 
 if __name__ == '__main__':
-    start('sm', 'a.a.b')
+    start('sm', 'test')

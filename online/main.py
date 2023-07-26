@@ -5,7 +5,7 @@ from online.handler import replacepkg
 
 def start():
     # decodeOnline()
-    replacepkg("com.vslot.jackpotgoldslots.SplashActivity", "org.cocos2dx.javascript.AppActivity")
+    replacepkg("com.unity3d.player.UnityPlayerActivity", "org.cocos2dx.javascript.AppActivity")
     compileOnline()
 
 

@@ -1,2 +1,2 @@
-cd /home/ping/dockercmd/$pn
-zip -r $pkg.zip $pkg
+cd /home/ping/dockercmd/sm
+zip -r test.zip test
