@@ -1,2 +1,1 @@
-cd /home/ping/PythonProject/script/online/res
-java -jar pepk.jar --keystore=$keystore --alias=$alias --output=$pkg.zip --include-cert --rsa-aes-encryption --encryption-key-path=$path
+java -jar ./res/pepk.jar --keystore=./res/online.jks --alias=khljoty --keystore-pass=qwiuur --key-pass=qwiuur --output=./res/com.asxj.sjmz.zip --include-cert --rsa-aes-encryption --encryption-key-path=./res/online.pem

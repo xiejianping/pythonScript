@@ -67,5 +67,49 @@ def start(pn, pkg):
     print(f'已删除{zipPath}')
 
 
+def download(pn, pkg):
+    cmd = 'scp docker-60:/home/ubuntu/apps/$pn/$pkg/app/build/outputs/apk/release/app-release.apk $apkPath\nscp docker-60:/home/ubuntu/apps/$pn/$pkg/app/build/outputs/bundle/release/app-release.aab $aabPath'
+    apkPath = f'/home/ping/dockercmd/{pn}/apks'
+    aabPath = f'/home/ping/dockercmd/{pn}/config/{pkg}'
+    os.makedirs(aabPath, exist_ok=True)
+    cmd = cmd.replace("$pn", pn) \
+        .replace("$pkg", pkg) \
+        .replace("$apkPath", f'{apkPath}/{pkg}.apk') \
+        .replace("$aabPath", f'{aabPath}/{pkg}.aab')
+    print(cmd)
+    with open('./res/download.sh', mode='w', encoding='utf-8') as file:
+        file.write(cmd)
+    os.system('./res/download.sh')
+
+
+def signKeys(jks, alias, pwd, pem, pkg, output):
+    jar = f'./res/pepk.jar'
+    cmd = f'java -jar {jar} --keystore=$jks --alias=$alias --keystore-pass=$pwd --key-pass=$pwd --output=$output --include-cert --rsa-aes-encryption --encryption-key-path=$pem'
+    cmd = cmd.replace("$jks", jks) \
+        .replace("$alias", alias) \
+        .replace("$pwd", pwd) \
+        .replace("$pem", pem) \
+        .replace("$output", output) \
+        .replace("$pkg", pkg)
+
+    print(cmd)
+    with open('./res/signzip.sh', mode='w', encoding='utf-8') as file:
+        file.write(cmd)
+    os.system('./res/signzip.sh')
+
+
+def handlerAfter(pn, pkg):
+    download(pn, pkg)
+    jks = './res/online.jks'
+    pem = './res/online.pem'
+    alisa = 'khlj'
+    pwd = 'qwir'
+    output = f'./res/{pkg}.zip'
+    if os.path.exists(output):
+        os.remove(output)
+    signKeys(jks, alisa, pwd, pem, pkg, output)
+
+
 if __name__ == '__main__':
     start('sm', 'test')
+    # handlerAfter('sm', 'com.asxj')
