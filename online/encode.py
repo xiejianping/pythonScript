@@ -48,5 +48,5 @@ def compileOnline():
 
 
 if __name__ == '__main__':
-    # compile(output)
-    compileOnline()
+    compile(output)
+    # compileOnline()

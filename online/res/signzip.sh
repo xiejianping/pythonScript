@@ -1,1 +1,1 @@
-java -jar ./res/pepk.jar --keystore=./res/online.jks --alias=khljoty --keystore-pass=qwiuur --key-pass=qwiuur --output=./res/com.asxj.sjmz.zip --include-cert --rsa-aes-encryption --encryption-key-path=./res/online.pem
+java -jar ./res/pepk.jar --keystore=./res/online.jks --alias=wvcrduy --keystore-pass=bnnhcuqmv --key-pass=bnnhcuqmv --output=./res/com.dqbf.iaf.xrfm.zip --include-cert --rsa-aes-encryption --encryption-key-path=./res/online.pem

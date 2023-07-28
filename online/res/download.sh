@@ -1,2 +1,2 @@
-scp docker-60:/home/ubuntu/apps/sm/com.asxj.sjmz/app/build/outputs/apk/release/app-release.apk /home/ping/dockercmd/sm/apks/com.asxj.sjmz.apk
-scp docker-60:/home/ubuntu/apps/sm/com.asxj.sjmz/app/build/outputs/bundle/release/app-release.aab /home/ping/dockercmd/sm/config/com.asxj.sjmz/com.asxj.sjmz.aab
+scp docker-60:/home/ubuntu/apps/slg/com.dqbf.iaf.xrfm/app/build/outputs/apk/release/app-release.apk /home/ping/dockercmd/slg/apks/com.dqbf.iaf.xrfm.apk
+scp docker-60:/home/ubuntu/apps/slg/com.dqbf.iaf.xrfm/app/build/outputs/bundle/release/app-release.aab /home/ping/dockercmd/slg/config/com.dqbf.iaf.xrfm/com.dqbf.iaf.xrfm.aab

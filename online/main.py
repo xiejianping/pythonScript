@@ -5,7 +5,7 @@ from online.handler import replacepkg
 
 def start():
     # decodeOnline()
-    replacepkg("com.artoon.courtpieceoffline.LoginActivity", "org.cocos2dx.javascript.AppActivity")
+    replacepkg("com.unity3d.player.UnityPlayerActivity","com.dqbf.iaf.xrfm.JSDdjs")
     compileOnline()
 
 

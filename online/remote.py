@@ -100,10 +100,10 @@ def signKeys(jks, alias, pwd, pem, pkg, output):
 
 def handlerAfter(pn, pkg):
     download(pn, pkg)
-    jks = './res/online.jks'
-    pem = './res/online.pem'
-    alisa = 'khlj'
-    pwd = 'qwir'
+    jks = f'./res/{pkg}.jks'
+    pem = f'./res/{pkg}.pem'
+    alisa = 'wvcrduy'
+    pwd = 'bnnhcuqmv'
     output = f'./res/{pkg}.zip'
     if os.path.exists(output):
         os.remove(output)
@@ -111,5 +111,5 @@ def handlerAfter(pn, pkg):
 
 
 if __name__ == '__main__':
-    start('sm', 'test')
-    # handlerAfter('sm', 'com.asxj')
+    start('slg', 'com.dqbf.iaf.xrfm')
+    # handlerAfter('slg', 'com.dqbf.iaf.xrfm')
