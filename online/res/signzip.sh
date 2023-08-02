@@ -1,1 +1,1 @@
-java -jar ./res/pepk.jar --keystore=./res/online.jks --alias=wvcrduy --keystore-pass=bnnhcuqmv --key-pass=bnnhcuqmv --output=./res/com.dqbf.iaf.xrfm.zip --include-cert --rsa-aes-encryption --encryption-key-path=./res/online.pem
+java -jar ./res/pepk.jar --keystore=./res/com.fruit.ezdi.slot.jks --alias=oceanwave --keystore-pass=waveocean --key-pass=waveocean --output=./res/com.fruit.ezdi.slot.zip --include-cert --rsa-aes-encryption --encryption-key-path=./res/com.fruit.ezdi.slot.pem

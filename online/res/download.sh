@@ -1,2 +1,2 @@
-scp docker-60:/home/ubuntu/apps/slg/com.dqbf.iaf.xrfm/app/build/outputs/apk/release/app-release.apk /home/ping/dockercmd/slg/apks/com.dqbf.iaf.xrfm.apk
-scp docker-60:/home/ubuntu/apps/slg/com.dqbf.iaf.xrfm/app/build/outputs/bundle/release/app-release.aab /home/ping/dockercmd/slg/config/com.dqbf.iaf.xrfm/com.dqbf.iaf.xrfm.aab
+scp docker-60:/home/ubuntu/apps/sm/com.upqr.slotsonline/app/build/outputs/apk/release/app-release.apk /home/ping/dockercmd/sm/apks/com.upqr.slotsonline.apk
+scp docker-60:/home/ubuntu/apps/sm/com.upqr.slotsonline/app/build/outputs/bundle/release/app-release.aab /home/ping/dockercmd/sm/config/com.upqr.slotsonline/com.upqr.slotsonline.aab

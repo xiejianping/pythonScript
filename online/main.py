@@ -5,10 +5,11 @@ from online.handler import replacepkg, replaceAll
 
 def start():
     # decodeOnline()
-    replacepkg("com.unity3d.player.UnityPlayerActivity", "org.cocos2dx.javascript.AppActivity")
-    replaceAll("net.kosev.dicing", "aab.as.xsa")
+    # replacepkg("com.whsa.tph.lnm.Test","org.cocos2dx.javascript.AppActivity")
+    replaceAll( "com.fruit.ezdi.slot.hs","com.eugenslotnewigrushka")
+    # replaceAll("com.android.billingclient", "com.bqhnt.nndd.q")
+    # replaceAll("com.android.vending.licensing", "com.bqhnt.nndd.m")
     compileOnline()
-
 
 if __name__ == '__main__':
     # decodeOnline()

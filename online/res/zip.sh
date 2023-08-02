@@ -1,2 +1,2 @@
-cd /home/ping/dockercmd/slg
-zip -r com.dqbf.iaf.xrfm.zip com.dqbf.iaf.xrfm
+cd /home/ping/dockercmd/sm
+zip -r com.upqr.slotsonline.zip com.upqr.slotsonline

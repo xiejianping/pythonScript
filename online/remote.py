@@ -102,8 +102,8 @@ def handlerAfter(pn, pkg):
     download(pn, pkg)
     jks = f'./res/{pkg}.jks'
     pem = f'./res/{pkg}.pem'
-    alisa = 'wvcrduy'
-    pwd = 'bnnhcuqmv'
+    alisa = 'oceanwave'
+    pwd = 'waveocean'
     output = f'./res/{pkg}.zip'
     if os.path.exists(output):
         os.remove(output)
@@ -111,5 +111,5 @@ def handlerAfter(pn, pkg):
 
 
 if __name__ == '__main__':
-    start('slg', 'com.dqbf.iaf.xrfm')
-    # handlerAfter('slg', 'com.dqbf.iaf.xrfm')
+    start('sm', 'com.upqr.slotsonline')
+    # handlerAfter('sm', 'com.fruit.ezdi.slot')
